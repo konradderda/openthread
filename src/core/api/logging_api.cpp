@@ -51,6 +51,20 @@ otLogLevel otLoggingGetLevel(void)
 #if OPENTHREAD_CONFIG_ENABLE_DYNAMIC_LOG_LEVEL
 void otLoggingSetLevel(otLogLevel aLogLevel)
 {
+#if OPENTHREAD_CONFIG_ENABLE_DYNAMIC_REGION_LOG_LEVEL
+    for(otLogRegion region = OT_LOG_REGION_API; region <= OT_LOG_REGION_UTIL; ++region)
+    {
+        Instance::Get().SetRegionLogLevel(aLogLevel, aRegion);
+    }
+#else
     Instance::Get().SetLogLevel(aLogLevel);
+#endif
+}
+#endif
+
+#if OPENTHREAD_CONFIG_ENABLE_DYNAMIC_REGION_LOG_LEVEL
+void otLoggingSetRegionLevel(otLogLevel aLogLevel, otLogRegion aRegion)
+{
+    Instance::Get().SetRegionLogLevel(aLogLevel, aRegion);
 }
 #endif

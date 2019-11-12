@@ -182,7 +182,32 @@ public:
      * @param[in] aLogLevel  A log level.
      *
      */
-    void SetLogLevel(otLogLevel aLogLevel) { mLogLevel = aLogLevel; }
+    void SetLogLevel(otLogLevel aLogLevel) 
+    {  
+#if OPENTHREAD_CONFIG_ENABLE_DYNAMIC_REGION_LOG_LEVEL 
+        for (otLogRegion region = OT_LOG_REGION_API; region <= OT_LOG_REGION_UTIL; ++region)
+        {
+            SetRegionLogLevel(aLogLevel, region);
+        }
+#else        
+        mLogLevel = aLogLevel; 
+#endif
+    }
+#endif
+
+#if OPENTHREAD_CONFIG_ENABLE_DYNAMIC_REGION_LOG_LEVEL
+    /**
+     * 
+     */
+    otLogLevel GetRegionLogLevel(otLogRegion aRegion) { return mRegionLogLevel[aRegion]; }
+
+    /**
+     * This method sets the log level for the given region.
+     * 
+     * @param[in] aLogLevel  The log level.
+     * @param[in] aRegion    The region.
+     */
+    void SetRegionLogLevel(otLogLevel aLogLevel, otLogRegion aRegion) { mRegionLogLevel[aRegion] = aLogLevel; }
 #endif
 
     /**
@@ -396,6 +421,9 @@ private:
 #endif // OPENTHREAD_RADIO || OPENTHREAD_CONFIG_LINK_RAW_ENABLE
 
 #if OPENTHREAD_CONFIG_ENABLE_DYNAMIC_LOG_LEVEL
+#if OPENTHREAD_CONFIG_ENABLE_DYNAMIC_REGION_LOG_LEVEL
+    otLogLevel mRegionLogLevel[OT_LOG_REGION_COUNT];
+#else
     otLogLevel mLogLevel;
 #endif
 #if OPENTHREAD_ENABLE_VENDOR_EXTENSION

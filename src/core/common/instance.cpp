@@ -102,9 +102,6 @@ Instance::Instance(void)
 #if OPENTHREAD_RADIO || OPENTHREAD_CONFIG_LINK_RAW_ENABLE
     , mLinkRaw(*this)
 #endif
-#if OPENTHREAD_CONFIG_ENABLE_DYNAMIC_LOG_LEVEL
-    , mLogLevel(static_cast<otLogLevel>(OPENTHREAD_CONFIG_INITIAL_LOG_LEVEL))
-#endif
 #if OPENTHREAD_ENABLE_VENDOR_EXTENSION
     , mExtension(Extension::ExtensionBase::Init(*this))
 #endif
@@ -113,6 +110,9 @@ Instance::Instance(void)
 #endif
     , mIsInitialized(false)
 {
+#if OPENTHREAD_CONFIG_ENABLE_DYNAMIC_REGION_LOG_LEVEL
+    otSetLogLevel(static_cast<otLogLevel>(OPENTHREAD_CONFIG_INITIAL_LOG_LEVEL);
+#endif
 }
 
 #if !OPENTHREAD_CONFIG_MULTIPLE_INSTANCE_ENABLE

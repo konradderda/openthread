@@ -136,6 +136,8 @@ typedef enum otLogRegion
     OT_LOG_REGION_UTIL     = 16, ///< Utility module
 } otLogRegion;
 
+#define OT_LOG_REGION_COUNT 16
+
 /**
  * This function outputs logs.
  *

@@ -1900,7 +1900,11 @@ const char *otLogLevelToPrefixString(otLogLevel aLogLevel);
 #define _otDynamicLog(aLogLevel, aRegion, aFormat, ...)             \
     do                                                              \
     {                                                               \
+#if OPENTHREAD_CONFIG_ENABLE_DYNAMIC_REGION_LOG_LEVEL == 1
+        if (otLoggingGetRegionLevel(aRegion) <= aLogLevel)          \
+#else // OPENTHREAD_CONFIG_ENABLE_DYNAMIC_REGION_LOG_LEVEL
         if (otLoggingGetLevel() >= aLogLevel)                       \
+#endif // OPENTHREAD_CONFIG_ENABLE_DYNAMIC_REGION_LOG_LEVEL
             _otPlatLog(aLogLevel, aRegion, aFormat, ##__VA_ARGS__); \
     } while (false)
 
